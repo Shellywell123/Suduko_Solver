@@ -1,3 +1,3 @@
 # Suduko_Solver
 
-## I will clean this up soon
+Python3 package being written to import sudukos from txt files, and solves them automatically.
