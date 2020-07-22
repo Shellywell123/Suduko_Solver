@@ -1,0 +1,43 @@
+['Pass 1---------------------------']
+['section 5 autocompleted with number 3']
+['row 4 autocompleted with number 1']
+column 1 autocompleted with number 5
+column 6 autocompleted with number 6
+column 9 autocompleted with number 2
+column 4 filled with number 5 via 1 row block(s)
+column 5 filled with number 3 via 1 row block(s)
+column 5 filled with number 3 via 1 row block(s)
+column 5 filled with number 6 via 1 row block(s)
+row 1 filled with number 7 via 1 column block(s)
+row 1 filled with number 7 via 1 column block(s)
+row 5 filled with number 1 via 1 column block(s)
+row 5 filled with number 1 via 1 column block(s)
+row 5 filled with number 5 via 1 column block(s)
+row 6 filled with number 4 via 1 column block(s)
+row 6 filled with number 4 via 1 column block(s)
+row 6 filled with number 5 via 1 column block(s)
+['Pass 2---------------------------']
+['section 2 autocompleted with number 1']
+row 7 autocompleted with number 8
+row 9 autocompleted with number 7
+['column 7 autocompleted with number 1']
+column 2 filled with number 8 via 1 row block(s)
+column 2 filled with number 8 via 1 row block(s)
+column 2 filled with number 3 via 1 row block(s)
+column 3 filled with number 8 via 1 row block(s)
+column 3 filled with number 1 via 1 row block(s)
+column 3 filled with number 1 via 1 row block(s)
+column 3 filled with number 9 via 1 row block(s)
+column 3 filled with number 1 via 1 row block(s)
+['Pass 3---------------------------']
+['section 9 autocompleted with number 3']
+['row 2 autocompleted with number 6']
+['column 8 autocompleted with number 2']
+['Pass 4---------------------------']
+[]
+['ERRORS ---------------------------']
+row 1 has 2 instances of the number 7
+row 3 has 2 instances of the number 1
+row 8 has 2 instances of the number 1
+col 3 has 2 instances of the number 1
+col 3 has 2 instances of the number 7
