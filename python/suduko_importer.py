@@ -10,10 +10,15 @@ import numpy as np
 
 def import_suduko(file):
     """ """
-    path = 'C://Users//benja//Documents//Programming//Python Projects//Suduko_Solver//Sudukos_txt//'+file
+    path_to_gitrepo = '/mnt/c/Users/benja/Documents/Programming/Python Projects/Suduko_Solver/'
+    path = path_to_gitrepo+'Sudukos_txt/'+file
     
+    raw_content = open(path,'r').read()
     content1 = open(path,'r').read().replace(' ','').replace('0',' ')
-  #  print(content1)
+
+    print(path)
+    print(raw_content)
+   
     content = []
     for n in range(0,len(content1)):
         content.append(content1[n])

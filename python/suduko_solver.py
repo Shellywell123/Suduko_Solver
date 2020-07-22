@@ -51,7 +51,9 @@ def welcome(version_num):
     
 def write_log_file(log):
     """ """
-    path = 'C://Users//benja//Documents//Programming//Python Projects//Suduko_Solver//log//log.txt'
+    path_to_gitrepo = '/mnt/c/Users/benja/Documents/Programming/Python Projects/Suduko_Solver/'
+    path = path_to_gitrepo + 'log/log.txt'
+
     file = open(path,'w') 
     for n in range(0,len(log)):
         if len(log[n])>1:
