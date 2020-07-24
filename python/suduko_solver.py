@@ -231,8 +231,19 @@ def check_if_missing(elements):
     locations = []
     counts=0
     checks = [1,2,3,4,5,6,7,8,9]
+
+    def remAll(L, item):
+        answer = []
+        for i in L:
+            if i!=item:
+                answer.append(i)
+        return answer
+
     for num in checks:
-        if num not in elements:
+        #print(elements)
+        elements_int = [int(i) for i in remAll(elements,' ')]
+        if num not in elements_int:
+
             missing.append(num)
         else:
             pass
@@ -306,9 +317,9 @@ def suduko_section_completer(suduko,report):
     for n in range(0,len(data)):
         one_data = data[n]
         sec_num = one_data[0]
+        #print(sec_num,one_data)
         
         if len(one_data[1]) == 1:
-
 
             if check_if_missing(section_to_elements(suduko,sec_num))[1] == 'FULL':
                 pass
@@ -432,6 +443,7 @@ def suduko_row_completor(suduko,report,report2):
     """ """
     log_entries = []
     row_data = row_data_report(suduko,report,report2)
+    #print(row_data)
     changes = 0
 
     for n in range(0,len(row_data)):
@@ -462,23 +474,33 @@ def suduko_row_completor(suduko,report,report2):
 def suduko_row_check_complete(suduko,report):
     """ """
   #  print_suduko(suduko)
-    row_data = check_rows(suduko,report)
+    row_data = check_rows(suduko,'print')#report)
     log_entries = []
     changes = 0
-   # print(row_data)
+    #print(row_data)
+   # print(len(row_data))
+    
     for n in range(0,len(row_data)):
         row_num = row_data[n][0]-1
         row_missing_nums = row_data[n][1][0]
         row_missing_locs = row_data[n][1][1][0]
+        #print('row_num,row_missing_nums,row_missing_locs')
+       # print(row_num,row_missing_nums,row_missing_locs)
         
         if len(row_missing_locs) <=1:
+            print('debug')
             break
         else:
-      #      print(row_num,row_missing_nums,row_missing_locs)
-            for m in range(0,len(row_missing_locs)):
-                col_data = get_col(suduko,row_missing_locs[m],report)
+
+            
+            #for m in range(0,len(row_missing_locs)):
+            # changed by ben recently 
+            for m in range(0,1):
+                #print(m)
+                col_data = get_col(suduko,row_missing_locs[m],'print')#report)
+
                 
-              #  print(' ',col_missing_locs[m],' - ',row_data)
+                #print(' ',col_missing_locs[m],' - ',row_data)
                 for l in range(0,len(col_data)):
                     matches = []
                     for k in range(0,len(row_missing_nums)):
@@ -668,7 +690,9 @@ def suduko_col_check_complete(suduko,report):
             break
         else:
           #  print(col_num,col_missing_nums,col_missing_locs)
-            for m in range(0,len(col_missing_locs)):
+            #for m in range(0,len(col_missing_locs)):
+            #changed by ben recently 
+            for m in range(0,1):
                 row_data = get_row(suduko,col_missing_locs[m],report)
                 
               #  print(' ',col_missing_locs[m],' - ',row_data)
@@ -726,7 +750,7 @@ def solve(suduko,report,report2):
     total_changes = 0
     log = []
     for n in range(1,10):
-        
+        #print(n)
         changes = 0
         log_entries = []
     
@@ -746,7 +770,7 @@ def solve(suduko,report,report2):
             changes=changes+cols
             log_entries.append((c_log))
             
-        # level 2 checks
+        #level 2 checks
         cn,cn_log = suduko_col_check_complete(suduko,report)
         if cn > 0:
             changes=changes+cn
@@ -766,7 +790,7 @@ def solve(suduko,report,report2):
                 if check(suduko)== True:
                     print(complete_message)
                     break
-                    
+                
                 else:
                     log.append(['ERRORS '+'---------------------------'])
                     log.append(check(suduko))
@@ -789,7 +813,7 @@ def solve(suduko,report,report2):
  ------
   - Completed in {} seconds 
   - Passes completed    {}
-  - Numbers filled   {}/100
+  - Numbers filled   {}/81
   - log file written to {} """
                ).format(
                        (time.process_time() - start),
@@ -925,6 +949,7 @@ def check(suduko):
         return True
     else:
         return errors   
+
 ###############################################################################
     #Maintance section for testing new functions
 ###############################################################################

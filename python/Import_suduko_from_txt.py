@@ -10,7 +10,9 @@ import numpy as np
 path = 'C://Users//benja//Documents//Programming//Python Projects//Suduko_Solver//Sudukos_txt//s01b.txt'
 
 content1 = open(path,'r').read().replace(' ','').replace('0',' ')
-print(content1)
+
+#print(content1)
+
 content = []
 for n in range(0,len(content1)):
     content.append(content1[n])

@@ -16,8 +16,8 @@ def import_suduko(file):
     raw_content = open(path,'r').read()
     content1 = open(path,'r').read().replace(' ','').replace('0',' ')
 
-    print(path)
-    print(raw_content)
+    #print(path)
+    #print(raw_content)
    
     content = []
     for n in range(0,len(content1)):
@@ -37,5 +37,21 @@ def import_suduko(file):
     
     sections = [s1,s2,s3,s4,s5,s6,s7,s8,s9]
     imported_suduko = make_9x9(sections)
+
+    def make_strs_int(suduko):
+        for section in range(0,len(suduko)):
+            for subrow in range(0,len(suduko[section])):
+                for subel in range(0,len(suduko[section][subrow])):
+                    for subel2 in range(0,2):
+                        #print(suduko[section][subrow][subel])
+                        if suduko[section][subrow][subel][subel2] == ' ':
+                            pass
+                        else:
+                            suduko[section][subrow][subel][subel2] == int(suduko[section][subrow][subel][subel2])
+        return suduko
+
+    imported_suduko = make_strs_int(imported_suduko)
+  #  print(type(s1[0][0]))
+    print('suduko {} imported!'.format(file))
     return imported_suduko
     
