@@ -10,7 +10,7 @@ from python.suduko_solver import welcome,solve
 
 welcome('1.00')
 #suduko = easy_suduko1
-suduko = import_suduko('s01a.txt')
+suduko = import_suduko('s10a.txt')
 print_suduko(suduko)
 
 solve(suduko,'','')
