@@ -558,7 +558,12 @@ def auto_section_completor_n(suduko,report):
     return changes,log_entries
 
 def solve(suduko,report,report2):
-    """ runs all sub solve process through a loop"""
+    """ 
+    runs all sub solve process through a loop
+    """
+
+    print_suduko(suduko)
+    print('start')
     
     import time
     start = time.process_time()

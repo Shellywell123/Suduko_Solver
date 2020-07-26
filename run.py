@@ -11,8 +11,6 @@ from python.suduko_solver import welcome,solve
 welcome('1.00')
 suduko = easy_suduko2
 #suduko = import_suduko('s01a.txt')
-print_suduko(suduko)
-
 solve(suduko,'','')
 
 ###############################################################################
