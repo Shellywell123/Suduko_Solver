@@ -6,13 +6,12 @@ Created on Fri Jul 26 23:22:10 2019
 """
 
 from python.suduko_maker import print_suduko
-from python.suduko_checker import check
+from python.suduko_checker import *
 from python.suduko_actions import *
 from python.suduko_ascii import *
 from python.suduko_conversions import *
 import numpy as np
 
-    
 ###############################################################################
     #Log
 ###############################################################################
@@ -40,9 +39,11 @@ def write_log_file(log):
     file.close()  
     return path
 
-        ############################################################
+###############################################################################
+    #solvers
+###############################################################################
 
-def suduko_section_completer(suduko,report):     
+def auto_section_completer(suduko,report):     
     """ """
     changes = 0
     data = check_suduko_missings(suduko,report)  
@@ -158,7 +159,7 @@ def row_data_report(suduko,report,report2):
 
         ###############################################################
         
-def suduko_row_completor(suduko,report,report2):
+def auto_row_completor(suduko,report,report2):
     """ """
     log_entries = []
     row_data = row_data_report(suduko,report,report2)
@@ -190,7 +191,7 @@ def suduko_row_completor(suduko,report,report2):
 
         ###############################################################
         
-def suduko_row_check_complete(suduko,report):
+def auto_row_completor_n(suduko,report):
     """ """
   #  print_suduko(suduko)
     row_data = check_rows(suduko,report)
@@ -257,7 +258,6 @@ def suduko_row_check_complete(suduko,report):
                             pass
                 
     return changes,log_entries
-
 
 ###############################################################################
         # Column Processes
@@ -347,7 +347,7 @@ def col_data_report(suduko,report,report2):
 
         ###############################################################
             
-def suduko_col_completor(suduko,report,report2):
+def auto_column_completor(suduko,report,report2):
     """ """
     changes =0
     log_entries = []
@@ -372,7 +372,7 @@ def suduko_col_completor(suduko,report,report2):
 
         ###############################################################
         
-def suduko_col_check_complete(suduko,report):
+def auto_column_completor_n(suduko,report):
     """
     """
 
@@ -459,7 +459,7 @@ def suduko_col_check_complete(suduko,report):
 
         ###############################################################
 
-def suduko_section_check_complete(suduko,report):     
+def auto_section_completor_n(suduko,report):     
     """ """
     #report = 'print'
     changes = 0
@@ -557,13 +557,8 @@ def suduko_section_check_complete(suduko,report):
                 
     return changes,log_entries
 
-###############################################################################
-        # Solve
-###############################################################################
-
 def solve(suduko,report,report2):
     """ runs all sub solve process through a loop"""
-   
     
     import time
     start = time.process_time()
@@ -577,38 +572,37 @@ def solve(suduko,report,report2):
         log_entries = []
     
         # level 1 checks
-        section,s_log = suduko_section_completer(suduko,report)
+        section,s_log = auto_section_completer(suduko,report)
         if section > 0:
             changes = changes+section
             log_entries.append(s_log)
     
-        rows,r_log = suduko_row_completor(suduko,report,report2)
+        rows,r_log = auto_row_completor(suduko,report,report2)
         if rows > 0:
             changes=changes+rows
             log_entries.append(r_log)
     
-        cols,c_log = suduko_col_completor(suduko,report,report2)
+        cols,c_log = auto_column_completor(suduko,report,report2)
         if cols > 0:
             changes=changes+cols
             log_entries.append((c_log))
             
         #level 2 checks
-        section_n,s_log = suduko_section_check_complete(suduko,report)
+        section_n,s_log = auto_section_completor_n(suduko,report)
         if section_n > 0:
             changes = changes+section_n
             log_entries.append(s_log)
 
-        cn,cn_log = suduko_col_check_complete(suduko,report)
-        if cn > 0:
-            changes=changes+cn
-            log_entries.append(cn_log)
-            
-        rn,rn_log = suduko_row_check_complete(suduko,report)
+        rn,rn_log = auto_row_completor_n(suduko,report)
         if rn > 0:
             changes=changes+rn
             log_entries.append(rn_log) 
 
-
+        #level n checks
+        cn,cn_log = auto_column_completor_n(suduko,report)
+        if cn > 0:
+            changes=changes+cn
+            log_entries.append(cn_log)
 
         log.append(['Pass '+str(n)+'---------------------------'])
         log.append(log_entries)
@@ -626,8 +620,6 @@ def solve(suduko,report,report2):
                     print(failed_message)
                     break
                 
-                             
-                     
             else:
                 print('No more can be done on this ver :(')
                 break
@@ -655,18 +647,3 @@ def solve(suduko,report,report2):
     #    else:
     #        pass
     return 0
-
-
-###############################################################################
-    #Maintance section for testing new functions
-###############################################################################
-
-
-#from suduko_importer import import_suduko
-#from suduko_maker import print_suduko,easy_suduko1,medium_suduko1
-#
-#welcome('1.00')
-#
-#suduko = easy_suduko1
-#print_suduko(suduko)
-#solve(suduko,'','')

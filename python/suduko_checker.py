@@ -4,28 +4,13 @@ Created on Thu Aug  1 16:42:17 2019
 
 @author: B E N
 """
-from python.suduko_actions import get_col,get_row
+from python.suduko_actions import *
 import numpy as np
 
 ###############################################################################
-        #
+        # checks
 ###############################################################################
 
-def is_suduko_complete(suduko):
-    """ checks if each section is complete, 
-    if all sections complete, funtion returns True"""
-    
-    checks = check_suduko_missings(suduko,'')
-    full_sections = 0
-    for n in range(0,len(checks)):
-        if checks[n][2] == 'FULL':
-            full_sections=full_sections+1
-            
-    if full_sections == 9:
-        return True
-
-        ###############################################################
-        
 def check_if_missing(elements):
     """ """
     missing = []
@@ -62,8 +47,8 @@ def check_if_missing(elements):
         ###############################################################
         
 def check_suduko_missings(suduko,report):
-    """ """
-    
+    """
+     """
     sections_info = []
     for sec_num in range(1,10):
         section_info = []   
@@ -84,9 +69,25 @@ def check_suduko_missings(suduko,report):
     return sections_info
 
         ###############################################################
+
+def is_suduko_complete(suduko):
+    """ checks if each section is complete, 
+    if all sections complete, funtion returns True"""
+    
+    checks = check_suduko_missings(suduko,'')
+    full_sections = 0
+    for n in range(0,len(checks)):
+        if checks[n][2] == 'FULL':
+            full_sections=full_sections+1
+            
+    if full_sections == 9:
+        return True
+
+        ###############################################################
         
 def unpack(suduko):
-    """ """
+    """ 
+    """
     elements = []
     for n in [0,1,2]:
         section = suduko[n]

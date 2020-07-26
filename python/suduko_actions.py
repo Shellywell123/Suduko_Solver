@@ -1,6 +1,10 @@
 
 from python.suduko_conversions import *
 
+###############################################################################
+        # actions
+###############################################################################
+
 def section_to_elements(suduko,num):
     """ """
     y = sec_num_to_coords(num)[0]   
@@ -96,8 +100,6 @@ def get_row(suduko,row_num012,report):
     return h_elements 
 
         ###############################################################
-
-
 
 def get_row_num(section_num,sub_sum_num):
     """
