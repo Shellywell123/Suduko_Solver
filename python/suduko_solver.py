@@ -4,46 +4,14 @@ Created on Fri Jul 26 23:22:10 2019
 
 @author: B E N
 """
+
 from python.suduko_maker import print_suduko
-#from suduko_checker import check
+from python.suduko_checker import check
+from python.suduko_actions import *
+from python.suduko_ascii import *
+from python.suduko_conversions import *
 import numpy as np
 
-###############################################################################
-        #Messages
-###############################################################################
-complete_message = """\n
- ###############################
- ##---------------------------##               
- ##     SUDUKO COMPLETE!      ##
- ##---------------------------##
- ###############################"""
- 
-failed_message ="""
- ###############################
- ##---------------------------##               
- ##      SUDUKO FAILED !      ##
- ##---------------------------##
- ###############################
- """
- 
-def welcome(version_num):
-    """prints welcome asci"""
-    print(("""
-#############################################
-#   _________         .___     __           #
-#  /   _____/__ __  __| _/_ __|  | ______   #
-#  \_____  \|  |  \/ __ |  |  \  |/ /  _ \  #
-#  /        \  |  / /_/ |  |  /    <  <_> ) #
-# /_______  /____/\____ |____/|__|_ \____/  #
-#         \/           \/          \/       #
-#   _________      .__                      #
-#  /   _____/ ____ |  |___  __ ___________  #
-#  \_____  \ /  _ \|  |\  \/ // __ \_  __ \ #
-#  /        (  <_> )  |_\   /\  ___/|  | \/ #
-# /_______  /\____/|____/\_/  \___  >__|    #
-#          \/                      \/  {} #
-#############################################  
-""").format(str(version_num)))
     
 ###############################################################################
     #Log
@@ -72,243 +40,8 @@ def write_log_file(log):
     file.close()  
     return path
 
-   
-###############################################################################
-    #Conversions
-###############################################################################
-    
+        ############################################################
 
-def make_it_123(number):
-    """ 1-9 to 123"""
-    if 0<=number<=3:
-        return number
-    if 4<=number<=6:
-        return number-3
-    if 7<=number<=9:
-        return number-6 
-
-        ###############################################################
-        
-def make_it_123x(number):
-    """ 1-9 to 123"""
-    if 0<=number<=3:
-        return 1
-    if 4<=number<=6:
-        return 2
-    if 7<=number<=9:
-        return 3
-
-        ###############################################################
-            
-def make_it_012(number):
-    """0-8 to 012 """
-    if 0<=number<=2:
-        return number
-    if 3<=number<=5:
-        return number-3
-    if 6<=number<=8:
-        return number-6 
-
-        ###############################################################
-        
-def make_it_147_from_08(number):
-    """0-8 to 147"""
-    
-    if 0<=number<=2:
-        return 1
-    if 3<=number<=5:
-        return 4
-    if 6<=number<=8:
-        return 7
-
-        ###############################################################
-        
-def make_it_147_from_19(number):
-    """1-9 to 147"""
-    
-    if 1<=number<=3:
-        return 1
-    if 4<=number<=6:
-        return 4
-    if 7<=number<=9:
-        return 7
-
-        ###############################################################
-        
-def make_it_036(number):
-    """ """
-    if number in [1,4,7]:
-        return 0
-    if number in [2,5,8]:
-        return 3
-    if number in [3,6,9]:
-        return 6
-
-        ###############################################################
-        
-def make_it_012x(number):
-    """ """
-    if number in [1,4,7]:
-        return 0
-    if number in [2,5,8]:
-        return 1
-    if number in [3,6,9]:
-        return 2
-    
-###############################################################################
-        #Section/coordniates conversion
-###############################################################################
-        
-def sec_num_to_coords(section_num):
-    """ takes a number 1-9 and gives coords in terms of 0,1,2 [y,x]"""
-   # print(section_num)
-    if section_num == 1:
-        return  [0,0]
-    if section_num == 2:
-        return  [0,1]
-    if section_num == 3:
-        return  [0,2]
-    if section_num == 4:
-        return  [1,0]
-    if section_num == 5:
-        return  [1,1]
-    if section_num == 6:
-        return  [1,2]
-    if section_num == 7:
-        return  [2,0]
-    if section_num == 8:
-        return  [2,1]
-    if section_num == 9:
-        return  [2,2]
-
-        ###############################################################
-        
-def coords_to_sec_num(coords):
-    """ takes coords in terms of 0,1,2 [y,x] and gives a number 1-9  """
-   # print(section_num)
-    if coords == [0,0]:
-        return  1
-    if coords == [0,1]:
-        return  2
-    if coords == [0,2]:
-        return  3
-    if coords == [1,0]:
-        return  4
-    if coords == [1,1]:
-        return  5
-    if coords == [1,2]:
-        return  6
-    if coords == [2,0]:
-        return  7
-    if coords == [2,1]:
-        return  8
-    if coords == [2,2] :
-        return 9
-
-###############################################################################
-    #CHECKS
-###############################################################################
-
-def is_suduko_complete(suduko):
-    """ checks if each section is complete, 
-    if all sections complete, funtion returns True"""
-    
-    checks = check_suduko_missings(suduko,'')
-    full_sections = 0
-    for n in range(0,len(checks)):
-        if checks[n][2] == 'FULL':
-            full_sections=full_sections+1
-            
-    if full_sections == 9:
-        return True
-
-        ###############################################################
-        
-def check_if_missing(elements):
-    """ """
-    missing = []
-    
-    locations = []
-    counts=0
-    checks = [1,2,3,4,5,6,7,8,9]
-
-    def remAll(L, item):
-        answer = []
-        for i in L:
-            if i!=item:
-                answer.append(i)
-        return answer
-
-    for num in checks:
-        #print(elements)
-        elements_int = [int(i) for i in remAll(elements,' ')]
-        if num not in elements_int:
-
-            missing.append(num)
-        else:
-            pass
-        
-        counts+=1
-        if ' ' in elements:
-            locations = np.where(np.array(elements) == ' ')
-            
-        else:
-            locations = 'FULL'
-            
-    return missing,locations
-
-        ###############################################################
-                
-def get_section_elements(suduko,section):
-    """ takes sec num 1-9 and returns elements as list"""
-    y  = sec_num_to_coords(section)[0]
-    x  = sec_num_to_coords(section)[1]
-    
-    elements = []
-    for l in [0,1,2]:
-        for k in [0,1,2]:            
-            elements.append(suduko[y][x][l][k])    
-    return elements
-
-        ###############################################################
-        
-def check_suduko_missings(suduko,report):
-    """ """
-    
-    sections_info = []
-    for sec_num in range(1,10):
-        section_info = []   
-        elements = get_section_elements(suduko,sec_num)
-        locations = check_if_missing(elements)[1]
-        missing = check_if_missing(elements)[0]
-        section_info.append(sec_num)
-        section_info.append(missing)
-        section_info.append(locations)        
-        sections_info.append(section_info)        
-        if report == 'print':
-            if missing == []:
-                print('section',sec_num,'is full')
-            else:
-                print('section',sec_num,'is missing',missing,'@ locations',locations,'+')
-        else:
-            pass
-    return sections_info
-
-        ###############################################################
-        
-def section_to_elements(suduko,num):
-    """ """
-    y = sec_num_to_coords(num)[0]   
-    x = sec_num_to_coords(num)[1]
-    section = suduko[y][x]
-    elements = []
-    for n in [0,1,2]:
-        for m in range(0,3):
-            elements.append(section[n][m])
-    return elements
-
-        ###############################################################
-        
 def suduko_section_completer(suduko,report):     
     """ """
     changes = 0
@@ -335,8 +68,9 @@ def suduko_section_completer(suduko,report):
                 
                 log_entry = ('section ' + str(data[n][0]) + ' autocompleted with number ' + str(data[n][1][0]))
                 log_entries.append(log_entry)
-                print(log_entry)
+                
                 print_suduko(suduko)
+                print(log_entry)
                 changes=changes+1
                 
     return changes,log_entries
@@ -345,21 +79,6 @@ def suduko_section_completer(suduko,report):
         # Row Processes
 ###############################################################################
 
-def get_row(suduko,row_num012,report):
-    """ returns row elements, from row num in 012 format"""
-    row_num123 = row_num012 +1
-    n = make_it_036(row_num123)
-    i = make_it_147_from_08(row_num012)
-    
-    h_elements = (
-                  get_section_elements(suduko,i  )[n:n+3]+
-                  get_section_elements(suduko,i+1)[n:n+3]+
-                  get_section_elements(suduko,i+2)[n:n+3]
-                  )
-
-    return h_elements 
-
-        ###############################################################
         
 def check_rows(suduko,report):
     """ """
@@ -544,28 +263,6 @@ def suduko_row_check_complete(suduko,report):
         # Column Processes
 ###############################################################################
 
-def get_col(suduko,col_num012,report):
-    """ returns elements of a column given a col number in 012 format """
-    col_num123 = col_num012 +1
-    n = make_it_012x(col_num123)
-    i = make_it_123x(col_num123)
-    
-    v_elements = []
-    v_elements.append(get_section_elements(suduko,i)[n])          
-    v_elements.append(get_section_elements(suduko,i)[n+3])
-    v_elements.append(get_section_elements(suduko,i)[n+6])
-    
-    v_elements.append(get_section_elements(suduko,i+3)[n])
-    v_elements.append(get_section_elements(suduko,i+3)[n+3])
-    v_elements.append(get_section_elements(suduko,i+3)[n+6]) 
-    
-    v_elements.append(get_section_elements(suduko,i+6)[n])
-    v_elements.append(get_section_elements(suduko,i+6)[n+3])
-    v_elements.append(get_section_elements(suduko,i+6)[n+6])
-    
-    return v_elements
-
-        ###############################################################
         
 def check_cols(suduko,report):
     """ """
@@ -645,6 +342,7 @@ def col_data_report(suduko,report,report2):
             info.append(section_num)
             info.append(missing_nums)
             total_info.append(info)
+
     return total_info
 
         ###############################################################
@@ -675,131 +373,91 @@ def suduko_col_completor(suduko,report,report2):
         ###############################################################
         
 def suduko_col_check_complete(suduko,report):
-    """ """
+    """
+    """
+
   #  print_suduko(suduko)
     col_data = check_cols(suduko,report)
     log_entries = []
     changes = 0
    # print(col_data)
+
+    # cycles through each column
     for n in range(0,len(col_data)):
         col_num = col_data[n][0]-1
         col_missing_nums = col_data[n][1][0]
         col_missing_locs = col_data[n][1][1][0]
-        
+     #   print(col_num+1,'='*10,col_missing_nums)
+
+        # if number of missing elements is one or less in a given col
         if len(col_missing_locs) <=1:
-            print('hfgdf')
             break
+
+        # if number of missing elements is more than one in a given col
         else:
-            print('thsfgb')
-          #  print(col_num,col_missing_nums,col_missing_locs)
-            #for m in range(0,len(col_missing_locs)):
-            #changed by ben recently 
-            for m in range(0,1):
-                row_data = get_row(suduko,col_missing_locs[m],report)
+
+             # iterates through each missing numer
+            for k in range(0,len(col_missing_nums)):
+                matches = []
+
+                # itertes through each missing loaction of a given col
+                for m in range(0,len(col_missing_locs)):
+                #changed by ben recently 
+                #for m in range(0,1):
+
+                    # data for intersecting row with col missing gap
+                    row_data = get_row(suduko,col_missing_locs[m],report)
+                 #   print(' ',col_missing_locs[m],' - ',row_data)
+
                 
-              #  print(' ',col_missing_locs[m],' - ',row_data)
-                for l in range(0,len(row_data)):
-                    matches = []
-                    for k in range(0,len(col_missing_nums)):
-                       # print('ef')
-                        if col_missing_nums[k] == row_data[l]:
-                            print('hrt')
-                            number_matched = col_missing_nums[k]
-                            row_matched = col_missing_locs[m]
-                            matches.append([row_matched,number_matched])
-                       #     print('match',number_matched,'row',row_matched+1)
-                           #recenetly changed if len(col_missing_locs)-len(matches)==1:
-                            print(len(col_missing_locs))
-                            if len(col_missing_locs)==2:
-                                print('hfgfcxg')
-                         #       print('caught',col_missing_locs,matches)
-                                for z in range(0,len(matches)):
-                                    index = np.where(col_missing_locs == matches[z][0])[0][0]
-                                    col_missing_locs_updated = np.delete(col_missing_locs,index)
-                             #       print('caught',col_missing_locs_updated,matches)
-                                    row_num = col_missing_locs_updated[0]
-                                    number = matches[z][1]
-                                    
-                                    lil_x = make_it_123(col_num+1)-1
-                                    lil_y = make_it_123(row_num+1)-1
-                                    
-                                    big_x = int(np.ceil(float((col_num+1)/3)))-1
-                                    big_y = int(np.ceil((float((row_num+1)/3))))-1
-                                    
-                           #         print(big_y,big_x,lil_y,lil_x)
-                                    suduko[big_y][big_x][lil_y][lil_x] = number
-                                    print_suduko(suduko)
-                                    log_entry = ('column '+str(col_num +1)+' filled with number '+ str(number) +' via '+str(len(matches))+' row block(s)')
-                                    log_entries.append(str(log_entry))
-                                    print(log_entry)
-                                    changes = changes+1
-                            else:
-                                pass
-                        else:
-                            pass
-            
+                 #   print(col_missing_nums[k],row_data)
+                    #iterates through each intersection row elemenent
+                  #  for l in range(0,len(row_data)):
+                        
+                    
+                  #  print(row_data[l],col_missing_nums[k])
+
+                    if str(col_missing_nums[k]) in row_data:
+                    #    print(col_missing_nums[k])
+                        number_matched = col_missing_nums[k]
+                        row_matched = col_missing_locs[m]
+                        matches.append([row_matched,number_matched])
+#                            print('match',number_matched,'row',row_matched+1)
+                       # print('num of missing = ',len(col_missing_locs),', num of matches = ', len(matches))
+                    
+                    if len(col_missing_locs)-len(matches)==1:
+                   # print(len(col_missing_locs))
+                  #      print('hfgfcxg')
+                 #       print('caught',col_missing_locs,matches)
+                       # for z in range(0,len(matches)):
+                       # print(len(matches))
+                        index = np.where(col_missing_locs == matches[0][0])[0][0]
+                        col_missing_locs_updated = np.delete(col_missing_locs,index)
+                 #       print('caught',col_missing_locs_updated,matches)
+                        row_num = col_missing_locs_updated[0]
+                        number = matches[0][1]
+                        
+                        lil_x = make_it_123(col_num+1)-1
+                        lil_y = make_it_123(row_num+1)-1
+                        
+                        big_x = int(np.ceil(float((col_num+1)/3)))-1
+                        big_y = int(np.ceil((float((row_num+1)/3))))-1
+                        
+               #         print(big_y,big_x,lil_y,lil_x)
+                        suduko[big_y][big_x][lil_y][lil_x] = number
+                        print_suduko(suduko)
+                        log_entry = ('column '+str(col_num +1)+' filled with number '+ str(number) +' via '+str(len(matches))+' row block(s)')
+                        log_entries.append(str(log_entry))
+                        print(log_entry)
+                        changes = changes+1
+
+                    else:
+                        pass
+    #check_cols(suduko,'print')
+        
     return changes,log_entries
 
         ###############################################################
-
-def get_row_num(section_num,sub_sum_num):
-    """
-    returns row num from secnum and sub index
-    """
-    if section_num < 3:
-        if sub_sum_num <3:
-            return 1
-        if 3 <= sub_sum_num < 7:
-            return 2
-        if sub_sum_num >= 7:
-            return 3
-
-    if 3 <=section_num < 7:
-        if sub_sum_num <3:
-            return 4
-        if 3 <= sub_sum_num < 7:
-            return 5
-        if sub_sum_num >= 7:
-            return 6
-
-    if section_num >= 7:
-        if sub_sum_num <3:
-            return 7
-        if 3 <= sub_sum_num < 7:
-
-            return 8
-        if sub_sum_num >= 7:
-            return 9
-
-def get_col_num(section_num,sub_sum_num):
-    """
-    returns col num from secnum and sub index
-    """
-    if section_num in [1,4,7]:
-        if sub_sum_num in [0,3,6]:
-            return 1
-        if sub_sum_num in [1,4,7]:
-            return 2
-        if sub_sum_num in [2,5,8]:
-            return 3
-
-    if section_num in [2,5,8]:
-        if sub_sum_num in [0,3,6]:
-            return 4
-        if sub_sum_num in [1,4,7]:
-            return 5
-        if sub_sum_num in [2,5,8]:
-            return 6
-
-    if section_num in [3,6,9]:
-        if sub_sum_num in [0,3,6]:
-            return 7
-        if sub_sum_num in [1,4,7]:
-            return 8
-        if sub_sum_num in [2,5,8]:
-            return 9
-
-        ################################################################
 
 def suduko_section_check_complete(suduko,report):     
     """ """
@@ -818,7 +476,7 @@ def suduko_section_check_complete(suduko,report):
         missing_locs = list(one_data[2][0])
 
 
-        if len(missing_nums) == 2:
+        if (len(missing_nums) == 2) and (len(missing_locs) == 2):
         #    print('  ---- ',sec_num)
             #print(missing_nums)
             for missing_num in missing_nums:
@@ -832,54 +490,55 @@ def suduko_section_check_complete(suduko,report):
 
                 block_rows_1  = get_row(suduko,row_num_1-1,report)
                 block_cols_1  = get_col(suduko,col_num_1-1,report)
-
+              #  print(missing_locs)
+              #  print(missing_locs[1])
                 col_num_2 = get_col_num(sec_num,missing_locs[1])
                 row_num_2 = get_row_num(sec_num,missing_locs[1])
 
                 block_rows_2  = get_row(suduko,row_num_2-1,report)
                 block_cols_2  = get_col(suduko,col_num_2-1,report)
                 
-                input =False
+                input_ =False
 
                 if str(missing_num) in block_cols_1:
                     if (str(missing_num) not in block_cols_2) and (str(missing_num) not in block_rows_2):
-                        print('section {} has a block for number {} in col {}'.format(sec_num,missing_num,col_num_1))
+                   #     print('section {} has a block for number {} in col {}'.format(sec_num,missing_num,col_num_1))
                         #if num in block col put num in other free box
                         num_to_input = missing_num
                         input_location = missing_locs[1]
                         block_type = 'col'
-                        input = True
+                        input_ = True
 
 
                 if str(missing_num) in block_cols_2:
                     if (str(missing_num) not in block_cols_1) and (str(missing_num) not in block_rows_1):
-                        print('section {} has a block for number {} in col {}'.format(sec_num,missing_num,col_num_2))
+                     #   print('section {} has a block for number {} in col {}'.format(sec_num,missing_num,col_num_2))
                         #if num in block col put num in other free box
                         num_to_input = missing_num
                         input_location = missing_locs[0]
                         block_type = 'col'
-                        input = True
+                        input_ = True
 
                 if str(missing_num) in block_rows_1:
                     if (str(missing_num) not in block_cols_2) and (str(missing_num) not in block_rows_2):
-                        print('section {} has a block for number {} in col {}'.format(sec_num,missing_num,row_num_1))
+                     #   print('section {} has a block for number {} in col {}'.format(sec_num,missing_num,row_num_1))
                         #if num in block row put num in other free box
                         num_to_input = missing_num
                         input_location = missing_locs[1]
                         block_type = 'row'
-                        input = True
+                        input_ = True
 
 
                 if str(missing_num) in block_rows_2:
                     if (str(missing_num) not in block_cols_1) and (str(missing_num) not in block_rows_1):
-                        print('section {} has a block for number {} in col {}'.format(sec_num,missing_num,row_num_2))
+                     #   print('section {} has a block for number {} in col {}'.format(sec_num,missing_num,row_num_2))
                         #if num in block row put num in other free box
                         num_to_input = missing_num
                         input_location = missing_locs[0]
                         block_type = 'row'
-                        input = True
+                        input_ = True
                 
-                if input == True:
+                if input_ == True:
                  #   print(one_data)
                     y = sec_num_to_coords(sec_num)[0]
                     x = sec_num_to_coords(sec_num)[1]
@@ -889,18 +548,18 @@ def suduko_section_check_complete(suduko,report):
 
                     suduko[y][x][y1][x1]=num_to_input
                     
+                    print_suduko(suduko)
                     log_entry = ('section ' + str(sec_num) + ' autocompleted with number ' + str(num_to_input)+' via '+block_type + ' block')
                     log_entries.append(log_entry)
                     print(log_entry)
-                    print_suduko(suduko)
                     changes=changes+1
+                    break
                 
     return changes,log_entries
 
 ###############################################################################
         # Solve
 ###############################################################################
-
 
 def solve(suduko,report,report2):
     """ runs all sub solve process through a loop"""
@@ -997,128 +656,6 @@ def solve(suduko,report,report2):
     #        pass
     return 0
 
-###############################################################################
-        #
-###############################################################################
-        
-def unpack(suduko):
-    """ """
-    elements = []
-    for n in [0,1,2]:
-        section = suduko[n]
-        for m in [0,1,2]:
-            subsection = section[m]
-            for l in [0,1,2]:
-                subrow = subsection[l]
-                for k in [0,1,2]:
-                    element = subrow[k]
-                    elements.append(element)
-    return elements
-
-        ################################################################
-        
-def check_secs_correct(suduko):
-    """ check 1 of each number in each section """
-    elements = unpack(suduko)
- #   print(elements)
-    num_count = []
-    checks = [1,2,3,4,5,6,7,8,9]
-    for n in range(0,len(checks)):
-        
-        count = []
-        tally = np.where(elements == checks[n])
-        count.append(checks[n])
-        count.append(tally)
-        num_count.append(count)
-        
-    return 'passed'
-  #  print(num_count)
-
-        ################################################################
- 
-def check_rows_correct(suduko):
-    """ checks each row has one of each number"""
-    log_entries = []
-    fails = []
-    checks = [1,2,3,4,5,6,7,8,9]
-    
-    for i in [0,1,2,3,5,6,7,8]:
-        row=get_row(suduko,i,'')
-     #   print(row)
-        
-        num_count = []
-        
-        for num in checks:
-            count = []
-            count.append(num)
-            count.append(row.count(num))
-            num_count.append(count)
-        
-        for n in range(0,len(num_count)):
-            if  num_count[n][1] > 1:
-                fails.append(num_count[n])
-                log_entry=str('row {} has {} instances of the number {}').format(i+1,len(num_count[n]),num_count[n][0])
-                log_entries.append(log_entry)
-            else:
-                pass
-    if len(fails) == 0:
-        return 'passed'
-    else:
-        return log_entries
-    
-        ################################################################
-
-def check_cols_correct(suduko):
-    """ checks each column has one of each number"""        
-    log_entries = []
-    fails = []
-    checks = [1,2,3,4,5,6,7,8,9]
-    
-    for i in [0,1,2,3,5,6,7,8]:
-        col=get_col(suduko,i,'')
-     #   print(row)
-        
-        num_count = []
-        
-        for num in checks:
-            count = []
-            count.append(num)
-            count.append(col.count(num))
-            num_count.append(count)
-        
-        for n in range(0,len(num_count)):
-            if  num_count[n][1] > 1:
-                fails.append(num_count[n])
-                log_entry=str('col {} has {} instances of the number {}').format(i+1,len(num_count[n]),num_count[n][0])
-                log_entries.append(log_entry)
-            else:
-                pass
-    if len(fails) == 0:
-        return 'passed'
-    else:
-        return log_entries
-        
-        ################################################################
-        
-def check(suduko):
-    """ """
-    errors = []
-    passes = 0
-    
-    secs = check_secs_correct(suduko)
-    rows = check_rows_correct(suduko)
-    cols = check_cols_correct(suduko)
-    
-    for n in [secs,rows,cols]:
-        if n == 'passed':
-            passes=passes+1
-        else:
-            errors.append(n)
-            
-    if passes==3:
-        return True
-    else:
-        return errors   
 
 ###############################################################################
     #Maintance section for testing new functions

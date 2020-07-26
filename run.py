@@ -9,8 +9,8 @@ from python.suduko_maker import print_suduko,easy_suduko1,easy_suduko2,easy_sudu
 from python.suduko_solver import welcome,solve
 
 welcome('1.00')
-#suduko = easy_suduko1
-suduko = import_suduko('s10a.txt')
+suduko = easy_suduko2
+#suduko = import_suduko('s01a.txt')
 print_suduko(suduko)
 
 solve(suduko,'','')
@@ -23,4 +23,4 @@ solve(suduko,'','')
 #clean up
 #colours
 #fix more than 2 gap checker
-#box matcher
+#box matcher 

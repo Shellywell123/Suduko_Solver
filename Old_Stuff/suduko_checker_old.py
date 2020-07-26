@@ -10,80 +10,6 @@ import numpy as np
 ###############################################################################
         #
 ###############################################################################
-
-def is_suduko_complete(suduko):
-    """ checks if each section is complete, 
-    if all sections complete, funtion returns True"""
-    
-    checks = check_suduko_missings(suduko,'')
-    full_sections = 0
-    for n in range(0,len(checks)):
-        if checks[n][2] == 'FULL':
-            full_sections=full_sections+1
-            
-    if full_sections == 9:
-        return True
-
-        ###############################################################
-        
-def check_if_missing(elements):
-    """ """
-    missing = []
-    
-    locations = []
-    counts=0
-    checks = [1,2,3,4,5,6,7,8,9]
-
-    def remAll(L, item):
-        answer = []
-        for i in L:
-            if i!=item:
-                answer.append(i)
-        return answer
-
-    for num in checks:
-        #print(elements)
-        elements_int = [int(i) for i in remAll(elements,' ')]
-        if num not in elements_int:
-
-            missing.append(num)
-        else:
-            pass
-        
-        counts+=1
-        if ' ' in elements:
-            locations = np.where(np.array(elements) == ' ')
-            
-        else:
-            locations = 'FULL'
-            
-    return missing,locations
-
-        ###############################################################
-        
-def check_suduko_missings(suduko,report):
-    """ """
-    
-    sections_info = []
-    for sec_num in range(1,10):
-        section_info = []   
-        elements = get_section_elements(suduko,sec_num)
-        locations = check_if_missing(elements)[1]
-        missing = check_if_missing(elements)[0]
-        section_info.append(sec_num)
-        section_info.append(missing)
-        section_info.append(locations)        
-        sections_info.append(section_info)        
-        if report == 'print':
-            if missing == []:
-                print('section',sec_num,'is full')
-            else:
-                print('section',sec_num,'is missing',missing,'@ locations',locations,'+')
-        else:
-            pass
-    return sections_info
-
-        ###############################################################
         
 def unpack(suduko):
     """ """
@@ -202,4 +128,4 @@ def check(suduko):
     if passes==3:
         return True
     else:
-        return errors   
+        return errors
